@@ -1,5 +1,6 @@
   import 'package:flutter/material.dart';
   import 'package:untitled/models/pizzaData.dart';
+import 'package:untitled/pages/pizzadetails.dart';
 
   import '/models/pizza.dart';
 
@@ -26,6 +27,23 @@
             bottom: Radius.circular(10), top: Radius.circular(2)),
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children:[
+            GestureDetector(
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => PizzaDetails(pizza)));
+              },
+              child: _buildPizzeriaDetails(pizza),
+            ),
+            _buildBuyButton()
+          ],
+        )
+      );
+    }
+
+    _buildPizzeriaDetails(pizza pizza){
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           ListTile(
             title: Text(pizza.title),
@@ -42,27 +60,32 @@
             padding: const EdgeInsets.all(4),
             child: Text(pizza.garniture),
           ),
-          Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            ElevatedButton(
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(Colors.amber)),
+        ],
+      );
+  }
+
+  _buildBuyButton(){
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          ElevatedButton(
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(Colors.amber)),
               child: Row(
-                children: [
-                  Icon(Icons.shopping_cart),
-                  SizedBox(width: 5,),
-                  Text("Commander"),]
+                  children: [
+                    Icon(Icons.shopping_cart),
+                    SizedBox(width: 5,),
+                    Text("Commander"),]
               ),
               onPressed: () {
-              print("Commander la pizza");
-            })
-          ])
-        ])
-      );
-    }
+                print("Commander la pizza");
+              })
+        ]);
+  }
 
+/*
 
+ */
     @override
     Widget build(BuildContext context) {
       return Scaffold(
