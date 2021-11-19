@@ -20,11 +20,12 @@ class MyApp extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class MyHomePage extends StatelessWidget {
   MyHomePage({required this.title, Key? key}) : super(key: key);
   String title;
 
-  var _menus = [
+  final _menus = [
     Menu(1, 'Entrées', 'entree.png', Colors.lightGreen),
     Menu(2, 'Pizzas', 'pizza.png', Colors.red),
     Menu(3, 'Desserts', 'dessert.png', Colors.brown),
@@ -62,7 +63,7 @@ class MyHomePage extends StatelessWidget {
       height: 180,
       decoration: BoxDecoration(
         color: menu.color,
-        borderRadius: BorderRadius.all(Radius.circular(20))
+        borderRadius: const BorderRadius.all(Radius.circular(20))
       ),
       margin: EdgeInsets.all(4),
       padding: EdgeInsets.all(6),
