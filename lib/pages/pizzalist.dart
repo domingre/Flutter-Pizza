@@ -1,11 +1,15 @@
-  import 'package:flutter/material.dart';
-  import 'package:untitled/models/pizzaData.dart';
+import 'package:flutter/material.dart';
+import 'package:untitled/models/cart.dart';
+import 'package:untitled/models/pizzaData.dart';
+import 'package:untitled/models/shared/appBarWidget.dart';
+import 'package:untitled/models/shared/buyButton.dart';
 import 'package:untitled/pages/pizzadetails.dart';
 
   import '/models/pizza.dart';
 
   class PizzaList extends StatefulWidget {
-    const PizzaList({Key? key}) : super(key: key);
+    const PizzaList(this._cart, {Key? key}) : super(key: key);
+    final cart _cart;
 
     @override
     _PizzaListState createState() => _PizzaListState();
@@ -13,14 +17,14 @@ import 'package:untitled/pages/pizzadetails.dart';
 
   class _PizzaListState extends State<PizzaList> {
 
-    List<pizza> _liste = [];
+    List<Pizza> _liste = [];
 
     @override
     void initState(){
       _liste = pizzaData.buildList();
     }
 
-    _buildRow(pizza pizza){
+    _buildRow(Pizza pizza){
       return Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
@@ -31,17 +35,17 @@ import 'package:untitled/pages/pizzadetails.dart';
           children:[
             GestureDetector(
               onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => PizzaDetails(pizza)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => PizzaDetails(pizza, widget._cart)));
               },
               child: _buildPizzeriaDetails(pizza),
             ),
-            _buildBuyButton()
+            BuyButton()
           ],
         )
       );
     }
 
-    _buildPizzeriaDetails(pizza pizza){
+    _buildPizzeriaDetails(Pizza pizza){
       return Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -64,34 +68,10 @@ import 'package:untitled/pages/pizzadetails.dart';
       );
   }
 
-  _buildBuyButton(){
-    return Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          ElevatedButton(
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Colors.amber)),
-              child: Row(
-                  children: [
-                    Icon(Icons.shopping_cart),
-                    SizedBox(width: 5,),
-                    Text("Commander"),]
-              ),
-              onPressed: () {
-                print("Commander la pizza");
-              })
-        ]);
-  }
-
-/*
-
- */
     @override
     Widget build(BuildContext context) {
       return Scaffold(
-        appBar: AppBar(
-          title: Text('Nos Pizzas')
-        ),
+        appBar: appBarWidget("Nos Pizzas"),
         body: ListView.builder(
           padding: const EdgeInsets.all(8),
           itemCount: _liste.length,
