@@ -4,8 +4,8 @@ class pizza {
   final int id;
   final String title;
   final String garniture;
-  final double price;
   final String img;
+  final double price;
 
   int pate = 0;
   int taille = 1;
