@@ -38,4 +38,10 @@ class Pizza {
   }
 
   Pizza(this.id, this.title, this.garniture, this.img, this.price);
+  Pizza.fromJson(Map<String, dynamic> json)
+      : id = json['id'],
+        title = json['title'],
+        garniture = json['garniture'],
+        img = json['image'],
+        price = json['price'];
 }

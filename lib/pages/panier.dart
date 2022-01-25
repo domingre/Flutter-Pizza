@@ -25,18 +25,15 @@ class _PanierState extends State<Panier> {
                 return Container(
                   margin: const EdgeInsets.all(10.0),
                   decoration: new BoxDecoration(
-                      border: new Border.all(color: Colors.black)),
+                      border: Border.all(color: Colors.black)),
                   child: _buildItem(widget._cart.getCartItem(index)),
                 );
               },
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('Total : ${widget._cart.totalPrice()} €',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-            ],
+          Container(
+            margin: const EdgeInsets.all(10.0),
+            child: _buildTablePrice(widget._cart.totalPrice()),
           ),
           Row(
             children: [
@@ -44,10 +41,10 @@ class _PanierState extends State<Panier> {
                 child: Container(
                     padding: EdgeInsets.all(12),
                     child: ElevatedButton(
-                      child: Text('Valider'),
+                      child: Text('Valider le panier'),
                       style: ElevatedButton.styleFrom(primary: Colors.green),
                       onPressed: () {
-                        print('Valider');
+                        print('Valider le panier');
                       },
                     )),
               )
@@ -108,5 +105,78 @@ class _PanierState extends State<Panier> {
         ),
       ),
     ]);
+  }
+
+  Widget _buildTablePrice(double totalPrice) {
+    double iconSize = 40;
+    return Table(
+      columnWidths: const <int, TableColumnWidth>{
+        0: IntrinsicColumnWidth(),
+        1: FlexColumnWidth(),
+        2: FixedColumnWidth(64),
+      },
+      children: <TableRow>[
+        TableRow(children: <Widget>[
+          Container(
+            padding: EdgeInsets.all(2.0),
+            child: Text('',
+                style: TextStyle(fontWeight: FontWeight.bold),
+                textAlign: TextAlign.end),
+          ),
+          Container(
+            padding: EdgeInsets.all(2.0),
+            child: Text('Total HT',
+                style: TextStyle(fontWeight: FontWeight.bold),
+                textAlign: TextAlign.end),
+          ),
+          Container(
+            padding: EdgeInsets.all(2.0),
+            child: Text('0.0€',
+                style: TextStyle(fontWeight: FontWeight.bold),
+                textAlign: TextAlign.end),
+          ),
+        ]),
+        TableRow(children: <Widget>[
+          Container(
+            padding: EdgeInsets.all(2.0),
+            child: Text('',
+                style: TextStyle(fontWeight: FontWeight.bold),
+                textAlign: TextAlign.end),
+          ),
+          Container(
+            padding: EdgeInsets.all(2.0),
+            child: Text('TVA',
+                style: TextStyle(fontWeight: FontWeight.bold),
+                textAlign: TextAlign.end),
+          ),
+          Container(
+            padding: EdgeInsets.all(2.0),
+            child: Text('0.0€',
+                style: TextStyle(fontWeight: FontWeight.bold),
+                textAlign: TextAlign.end),
+          ),
+        ]),
+        TableRow(children: <Widget>[
+          Container(
+            padding: EdgeInsets.all(2.0),
+            child: Text('',
+                style: TextStyle(fontWeight: FontWeight.bold),
+                textAlign: TextAlign.end),
+          ),
+          Container(
+            padding: EdgeInsets.all(2.0),
+            child: Text('Total TTC',
+                style: TextStyle(fontWeight: FontWeight.bold),
+                textAlign: TextAlign.end),
+          ),
+          Container(
+            padding: EdgeInsets.all(2.0),
+            child: Text('${totalPrice}€',
+                style: TextStyle(fontWeight: FontWeight.bold),
+                textAlign: TextAlign.end),
+          ),
+        ]),
+      ],
+    );
   }
 }

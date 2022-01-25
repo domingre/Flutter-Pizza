@@ -3,6 +3,8 @@ import 'package:untitled/models/cart.dart';
 import 'package:untitled/models/pizzaData.dart';
 import 'package:untitled/pages/pizzadetails.dart';
 import 'package:untitled/pages/share/buyButton_Widget.dart';
+import 'package:untitled/pages/share/pizzeria_style.dart';
+import 'package:untitled/services/pizzeria_service.dart';
 
 import '/models/pizza.dart';
 import 'share/appBar_Widget.dart';
@@ -17,10 +19,13 @@ class PizzaList extends StatefulWidget {
 
 class _PizzaListState extends State<PizzaList> {
   List<Pizza> _liste = [];
+  late Future<List<Pizza>> _pizzas;
+  PizzeriaService _services = PizzeriaService();
 
   @override
   void initState() {
-    _liste = pizzaData.buildList();
+    _pizzas = _services.fetchPizzas();
+    //_liste = pizzaData.buildList();
   }
 
   _buildRow(Pizza pizza) {
@@ -95,12 +100,30 @@ class _PizzaListState extends State<PizzaList> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBarWidget("Nos Pizzas", widget._cart),
-        body: ListView.builder(
-          padding: const EdgeInsets.all(8),
-          itemCount: _liste.length,
-          itemBuilder: (context, index) {
-            return _buildRow(_liste[index]);
+        body: FutureBuilder<List<Pizza>>(
+          future: _pizzas,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return _buildListView(snapshot.data!);
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text(
+                  'Impossible de récupérer les données : ${snapshot.error}',
+                  style: PizzeriaStyle.errorTextStyle,
+                ),
+              );
+            }
+            return Center(child: CircularProgressIndicator());
           },
         ));
+  }
+
+  _buildListView(List<Pizza> pizzas) {
+    return ListView.builder(
+        padding: const EdgeInsets.all(8),
+        itemCount: pizzas.length,
+        itemBuilder: (context, index) {
+          return _buildRow(pizzas[index]);
+        });
   }
 }
