@@ -1,15 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:untitled/models/cart.dart';
 import 'package:untitled/models/option_item.dart';
+import 'package:untitled/pages/share/buyButton_Widget.dart';
 import 'package:untitled/pages/share/pizzeria_style.dart';
 import 'package:untitled/pages/share/total_widget.dart';
 
 import '/models/pizza.dart';
+import 'share/appBar_Widget.dart';
 
 class PizzaDetails extends StatefulWidget {
-  final pizza _pizza;
+  final Pizza _pizza;
+  final Cart _cart;
 
-  const PizzaDetails(this._pizza, {Key? key}) : super(key: key);
+  const PizzaDetails(this._pizza, this._cart, {Key? key}) : super(key: key);
 
   @override
   _PizzaDetailsState createState() => _PizzaDetailsState();
@@ -19,9 +23,7 @@ class _PizzaDetailsState extends State<PizzaDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget._pizza.title),
-        ),
+        appBar: AppBarWidget(widget._pizza.title, widget._cart),
         body: ListView(
           padding: EdgeInsets.all(4.0),
           children: [
@@ -50,7 +52,7 @@ class _PizzaDetailsState extends State<PizzaDetails> {
             Text("Sauce selectionnée(s)", style: PizzeriaStyle.headerTextStyle),
             _buildDropDownSauces(),
             totalWidget(widget._pizza.total),
-            _buildBuyButton(),
+            BuyButtonWidget(widget._pizza, widget._cart),
           ],
         ));
   }
@@ -78,8 +80,8 @@ class _PizzaDetailsState extends State<PizzaDetails> {
   _buildDropDownPates() {
     return DropdownButton<OptionItem>(
       isExpanded: true,
-      value: pizza.pates[widget._pizza.pate],
-      items: _buildDropDownItem(pizza.pates),
+      value: Pizza.pates[widget._pizza.pate],
+      items: _buildDropDownItem(Pizza.pates),
       onChanged: (item) {
         setState(() {
           widget._pizza.pate = item!.value;
@@ -91,8 +93,8 @@ class _PizzaDetailsState extends State<PizzaDetails> {
   _buildDropDownTailles() {
     return DropdownButton<OptionItem>(
       isExpanded: true,
-      value: pizza.tailles[widget._pizza.taille],
-      items: _buildDropDownItem(pizza.tailles),
+      value: Pizza.tailles[widget._pizza.taille],
+      items: _buildDropDownItem(Pizza.tailles),
       onChanged: (item) {
         setState(() {
           widget._pizza.taille = item!.value;
@@ -104,8 +106,8 @@ class _PizzaDetailsState extends State<PizzaDetails> {
   _buildDropDownSauces() {
     return DropdownButton<OptionItem>(
       isExpanded: true,
-      value: pizza.sauces[widget._pizza.sauce],
-      items: _buildDropDownItem(pizza.sauces),
+      value: Pizza.sauces[widget._pizza.sauce],
+      items: _buildDropDownItem(Pizza.sauces),
       onChanged: (item) {
         setState(() {
           widget._pizza.sauce = item!.value;

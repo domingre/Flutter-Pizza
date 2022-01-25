@@ -1,30 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:untitled/models/cart.dart';
 import 'package:untitled/models/pizzaData.dart';
 import 'package:untitled/pages/pizzadetails.dart';
+import 'package:untitled/pages/share/buyButton_Widget.dart';
 
 import '/models/pizza.dart';
+import 'share/appBar_Widget.dart';
 
 class PizzaList extends StatefulWidget {
-  const PizzaList({Key? key}) : super(key: key);
+  final Cart _cart;
+  const PizzaList(this._cart, {Key? key}) : super(key: key);
 
   @override
   _PizzaListState createState() => _PizzaListState();
 }
 
 class _PizzaListState extends State<PizzaList> {
-  List<pizza> _liste = [];
+  List<Pizza> _liste = [];
 
   @override
   void initState() {
     _liste = pizzaData.buildList();
   }
 
-  _buildRow(pizza pizza) {
+  _buildRow(Pizza pizza) {
     return Card(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(10), top: Radius.circular(2)),
-        ),
+            borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(10), top: Radius.circular(2))),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -33,16 +36,17 @@ class _PizzaListState extends State<PizzaList> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => PizzaDetails(pizza)));
+                        builder: (context) =>
+                            PizzaDetails(pizza, widget._cart)));
               },
               child: _buildPizzeriaDetails(pizza),
             ),
-            _buildBuyButton()
+            BuyButtonWidget(pizza, widget._cart),
           ],
         ));
   }
 
-  _buildPizzeriaDetails(pizza pizza) {
+  _buildPizzeriaDetails(Pizza pizza) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -90,7 +94,7 @@ class _PizzaListState extends State<PizzaList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Nos Pizzas')),
+        appBar: AppBarWidget("Nos Pizzas", widget._cart),
         body: ListView.builder(
           padding: const EdgeInsets.all(8),
           itemCount: _liste.length,

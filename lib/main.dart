@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:untitled/models/cart.dart';
 import 'package:untitled/pages/pizzalist.dart';
+import 'package:untitled/pages/share/appBar_Widget.dart';
 import 'models/menu.dart';
 
 void main() {
@@ -11,19 +13,22 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Pizzeria',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-        home: MyHomePage(title: "Notre pizzeria")
-    );
+        title: 'Pizzeria',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: MyHomePage(title: "Notre pizzeria"));
   }
 }
 
 // ignore: must_be_immutable
 class MyHomePage extends StatelessWidget {
-  MyHomePage({required this.title, Key? key}) : super(key: key);
   String title;
+  Cart _cart;
+
+  MyHomePage({required this.title, Key? key})
+      : _cart = Cart(),
+        super(key: key);
 
   final _menus = [
     Menu(1, 'Entrées', 'entree.png', Colors.lightGreen),
@@ -35,38 +40,35 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
+      appBar: AppBarWidget(title, _cart),
       body: Center(
-        child: ListView.builder(
-          itemCount: _menus.length,
-          itemBuilder: (context, index) => InkWell(
-            onTap: (){
-              switch(_menus[index].type) {
-                case 2:
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => PizzaList()),
-                  );
-                  break;
-              }
-            },
-            child: _buildRow(_menus[index]),
-          ),
-          itemExtent: 180,
-          )
+          child: ListView.builder(
+        itemCount: _menus.length,
+        itemBuilder: (context, index) => InkWell(
+          onTap: () {
+            switch (_menus[index].type) {
+              case 2:
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PizzaList(_cart)),
+                );
+                break;
+            }
+          },
+          child: _buildRow(_menus[index]),
         ),
-      );
+        itemExtent: 180,
+      )),
+    );
   }
 
-  _buildRow(Menu menu){
+  _buildRow(Menu menu) {
     return Container(
       height: 180,
       decoration: BoxDecoration(
-        color: menu.color,
-        borderRadius: const BorderRadius.all(Radius.circular(20))
-      ),
+          color: menu.color,
+          borderRadius: const BorderRadius.all(Radius.circular(20))),
       margin: EdgeInsets.all(4),
-      padding: EdgeInsets.all(6),
       child: Column(
         children: <Widget>[
           Expanded(
@@ -84,14 +86,12 @@ class MyHomePage extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Comic Sans MS',
                   fontSize: 28,
-                )
-              )
-            )
-          )
+                ),
+              ),
+            ),
+          ),
         ],
-      )
+      ),
     );
   }
 }
-
-
