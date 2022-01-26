@@ -1,6 +1,7 @@
 # Pizzeria
 
-Les différents td du cours de flutter. {3éme année Epsi}
+Application mobile réalisé en Flutter/Dart.
 
-## TD 1 -> 6
-Bon courage
+## Image/Donnée
+
+Création d'un fichier index.php avec les informations des pizzas dedant en format Json.
