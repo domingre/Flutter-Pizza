@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:untitled/models/pizza.dart';
 
 class PizzeriaService {
-  static final String uri = 'http://localhost/api/';
+  static final String uri = 'http://192.168.29.222/api/';
 
   Future<List<Pizza>> fetchPizzas() async {
     List<Pizza> list = [];

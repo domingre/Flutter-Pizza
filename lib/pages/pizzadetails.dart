@@ -29,8 +29,8 @@ class _PizzaDetailsState extends State<PizzaDetails> {
           children: [
             Text('Pizza ${widget._pizza.title}',
                 style: PizzeriaStyle.pageTitleTextStyle),
-            Image.asset(
-              'assets/images/pizza/${widget._pizza.img}',
+            Image.network(
+              '${widget._pizza.img}',
               height: 180,
             ),
             Text('Recette', style: PizzeriaStyle.headerTextStyle),

@@ -1,5 +1,8 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:untitled/models/cart.dart';
+import 'package:untitled/models/pizza.dart';
 
 class Panier extends StatefulWidget {
   final Cart _cart;
@@ -58,8 +61,8 @@ class _PanierState extends State<Panier> {
   Widget _buildItem(CartItem cartItem) {
     return Row(children: [
       Expanded(
-          child: Image.asset(
-        'assets/images/pizza/${cartItem.pizza.img}',
+          child: Image.network(
+        '${cartItem.pizza.img}',
         height: 120,
         fit: BoxFit.fitWidth,
       )),
@@ -87,13 +90,9 @@ class _PanierState extends State<Panier> {
                       IconButton(
                         iconSize: 32,
                         icon: Icon(Icons.expand_more, color: Colors.black),
-                        onPressed: () => {
-                          setState(() {
-                            if (cartItem.quantity > 0) {
-                              cartItem.quantity--;
-                            }
-                          })
-                        },
+                        onPressed: () => setState(() {
+                          _confirmationPopup(cartItem);
+                        }),
                       )
                     ],
                   )
@@ -178,5 +177,35 @@ class _PanierState extends State<Panier> {
         ]),
       ],
     );
+  }
+
+  Future? _confirmationPopup(CartItem cartItem) {
+    if (cartItem.quantity > 1) {
+      cartItem.quantity--;
+      return null;
+    } else {
+      return showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+                title: const Text('Panier'),
+                content: Text(
+                    'Voulez-vous enlever la pizza ${cartItem.pizza.title} du panier ?'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, 'Annuler'),
+                    child: const Text('Annuler'),
+                  ),
+                  TextButton(
+                    onPressed: () => {
+                      setState(() {
+                        widget._cart.removeProduct(cartItem.pizza);
+                      }),
+                      Navigator.pop(context, 'oui'),
+                    },
+                    child: const Text('Oui'),
+                  ),
+                ],
+              ));
+    }
   }
 }
